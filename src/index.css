@@ -61,7 +61,7 @@
         }
         .level-seal {
           display: inline-flex;
-          align-items: center;
+          align-items: center; 
           justify-content: center;
           padding: 1px 6px;
           border: 1.5px solid var(--hanko);

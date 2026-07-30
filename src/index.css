@@ -426,3 +426,9 @@
           color: var(--ink-soft);
           margin-bottom: 22px;
         }
+
+        @media (max-width: 575px) {
+          .stage{
+            height: 350px;
+          }
+        }

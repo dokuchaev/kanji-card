@@ -196,7 +196,7 @@ export default function App() {
             <span className="idx-tag">{String(pos + 1).padStart(2, "0")} / {String(WORDS.length).padStart(2, "0")}</span>
             <span className="hint-tag">Нажми, чтобы перевернуть</span>
             <div className="kanji-wrap">
-              <div className={`furigana ${showFurigana ? "" : "furigana-hidden"}`}>{current.hira}</div>
+              <div key={showFurigana ? "furigana-on" : "furigana-off"} className={`furigana ${showFurigana ? "" : "furigana-hidden"}`}>{current.hira}</div>
               <div className="kanji-big">{current.kanji}</div>
             </div>
           </div>

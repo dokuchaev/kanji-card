@@ -17,7 +17,7 @@ const WORDS = [
   { id: 12, kanji: "見る", hira: "みる", romaji: "miru", ru: "смотреть" },
   { id: 13, kanji: "大きい", hira: "おおきい", romaji: "ookii", ru: "большой" },
   { id: 14, kanji: "小さい", hira: "ちいさい", romaji: "chiisai", ru: "маленький" },
-  { id: 15, kanji: "今日", hira: "きょう", romaji: "kyou", ru: "сегодня" },
+  { id: 15, kanji: "今日", hira: "きょう", romaji: "kнou", ru: "сегодня" },
   { id: 16, kanji: "明日", hira: "あした", romaji: "ashita", ru: "завтра" },
   { id: 17, kanji: "友達", hira: "ともだち", romaji: "tomodachi", ru: "друг" },
   { id: 18, kanji: "家", hira: "いえ", romaji: "ie", ru: "дом" },
@@ -98,25 +98,23 @@ export default function App() {
 
   const resetProgress = () => setKnown(new Set());
 
-  // pointer handlers (работают и с пальцем, и с мышью)
+  // drag handlers: отдельно touch (мобильные) и mouse (десктоп) —
+  // touch-события надёжнее для свайпа, т.к. не зависят от pointer capture
   const isDragging = useRef(false);
   const movedRef = useRef(0);
 
-  const onPointerDown = (e) => {
-    touchStart.current = e.clientX;
+  const dragStart = (clientX) => {
+    touchStart.current = clientX;
     isDragging.current = true;
     movedRef.current = 0;
-    if (e.pointerId != null && cardRef.current?.setPointerCapture) {
-      try { cardRef.current.setPointerCapture(e.pointerId); } catch (_) {}
-    }
   };
-  const onPointerMove = (e) => {
+  const dragMove = (clientX) => {
     if (!isDragging.current || touchStart.current == null) return;
-    const delta = e.clientX - touchStart.current;
+    const delta = clientX - touchStart.current;
     movedRef.current = delta;
     setDragX(delta);
   };
-  const onPointerUp = () => {
+  const dragEnd = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
     const delta = movedRef.current;
@@ -125,6 +123,15 @@ export default function App() {
     else setDragX(0);
     touchStart.current = null;
   };
+
+  const onMouseDown = (e) => dragStart(e.clientX);
+  const onMouseMove = (e) => dragMove(e.clientX);
+  const onMouseUp = () => dragEnd();
+
+  const onTouchStart = (e) => dragStart(e.touches[0].clientX);
+  const onTouchMove = (e) => dragMove(e.touches[0].clientX);
+  const onTouchEnd = () => dragEnd();
+
   const onCardClick = () => {
     // клик засчитываем только если карточку почти не тащили — иначе это был свайп
     if (Math.abs(movedRef.current) < 8) setFlipped((f) => !f);
@@ -170,10 +177,14 @@ export default function App() {
           ref={cardRef}
           className={`card ${flipped ? "flipped" : ""} ${anim ? `anim-${anim}` : ""}`}
           onClick={onCardClick}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onTouchCancel={onTouchEnd}
           style={{
             ...(!anim && dragX
               ? { transform: `translateX(${dragX}px) rotate(${dragX / 30}deg)`, transition: "none" }

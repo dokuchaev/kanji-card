@@ -160,7 +160,7 @@ export default function App() {
       </div>
 
       <div className="settings-row">
-        <span className="settings-label">Фуригана над кандзи</span>
+        <span className="settings-label">Подсказка</span>
         <button
           className={`switch ${showFurigana ? "on" : ""}`}
           onClick={() => setShowFurigana((v) => !v)}

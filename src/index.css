@@ -143,7 +143,7 @@
           position: relative;
           width: 100%;
           max-width: 380px;
-          height: 480px;
+          height: 400px;
           perspective: 1400px;
         }
         .card {
@@ -162,7 +162,7 @@
         .face {
           position: absolute;
           inset: 0;
-          border-radius: 4px;
+          border-radius: 10px;
           backface-visibility: hidden;
           display: flex;
           flex-direction: column;
@@ -192,7 +192,9 @@
     
    
         .face-front {
-          background: #ffffff;
+            background: #f4f4f4;
+            outline-offset: -6px;
+            outline: 6px solid #fff;
         }
         .face-back {
           transform: rotateY(180deg);
@@ -243,7 +245,7 @@
         }
         .kanji-big {
           font-family: Georgia, "Hiragino Mincho ProN", "Yu Mincho", serif;
-          font-size: clamp(52px, 15vw, 78px);
+          font-size: clamp(52px, 25vw, 78px);
           font-weight: 700;
           text-align: center;
           line-height: 1.1;
@@ -385,7 +387,7 @@
           display: flex;
           justify-content: space-between;
           font-size: 10.5px;
-          letter-spacing: 0.08em;
+    
           color: var(--ink-soft);
         }
         .toolbar {
@@ -430,5 +432,8 @@
         @media (max-width: 575px) {
           .stage{
             height: 350px;
+          }
+          .toolbar {
+            gap: 5px;
           }
         }

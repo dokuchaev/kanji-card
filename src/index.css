@@ -154,7 +154,7 @@
           user-select: none;
           transition: transform 0.35s cubic-bezier(.22,.68,.35,1), opacity 0.2s ease;
           transform-style: preserve-3d;
-          touch-action: none;
+          touch-action: pan-y;
         }
         .card.flipped { transform: rotateY(180deg); }
         .card.anim-left { transform: translateX(-120%) rotate(-8deg); opacity: 0; }
